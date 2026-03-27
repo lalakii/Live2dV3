@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>pixi-live2d-display demo</title>
+    <link
+      rel="shortcut icon"
+      href="https://lalaki.cn/favicon.ico?v=1.0.0"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <h1>点击她还会发出声音哦</h1>
+    <div id="live2d"></div>
+    <p>
+      ‌Get source code from&nbsp;<a href="https://github.com/lalakii/Live2dV3"
+        >GitHub</a
+      >,&nbsp;by&nbsp;<a href="https://lalaki.cn">lalaki</a>
+    </p>
+    <script src="https://fastly.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/gh/lalakii/Live2dV3@master/live2dcubismcore.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/@pixi/sound@5/dist/pixi-sound.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/gh/lalakii/Live2dV3@master/live2dv3.js"></script>
+    <script>
+      let sounds = []; // 我的自定义音频
+      for (i = 0; i < 10; i++) {
+        sounds.push(
+          `https://fastly.jsdelivr.net/gh/lalakii/Live2dV3@master/assets/biaoqiang_3/sounds/demo_${i}.mp3`,
+        );
+      }
+      EasyLive2d.init()
+        .element(document.getElementById("live2d")) // 指定一个element对象作为live2d容器
+        .backgroundAlpha(1) // 需要透明背景把它改为 0
+        .backgroundColor("#00FF00") // 需要透明背景把它也改为 0
+        .width(600) // 调整大小宽度及live2d位置 width,height,x,y
+        .height(700)
+        .x(0.5)
+        .y(0.5)
+        .scale(0.08) // 缩放
+        .enableEyeFollow(true) // 人物目光跟随鼠标
+        .model(
+          // "https://fastly.jsdelivr.net/gh/lalakii/Live2d@master/live2d_3/model/Azue%20Lane(JP)/shengluyisi_3/shengluyisi_3.model3.json"
+          "https://fastly.jsdelivr.net/gh/lalakii/Live2dV3@master/assets/biaoqiang_3/biaoqiang_3.model3.json",
+        ) // String类型 要求 model3.json 文件。 这里要注意, 后缀名如果是 model.json(这是旧版格式) 是不支持的
+        .sounds(sounds) // 数组类型，配置音频，点击人物时触发
+        .hideParts([
+          /**
+        
+        可以直接控制台输入 window.localCoreModel._partIds 查看全部ID
+        添加这个方法是为了在显示异常的时候可以方便隐藏部件，特别是在没有工程文件时
+        一些live2d模型可能由于版本不同导致显示出现异常，就可以使用它来隐藏不想看到的部件
+        这里尝试修复 zhala_2 显示异常的情况
+        **/
+          {
+            name: "zhala_2", //模型名称
+            ids: [
+              //需要隐藏的id列表
+              "PartLoginParts",
+              "PartHandLCongxia",
+              "PartHandLNakaiDuli",
+              "PartArmRMove",
+              "PartArmLMove",
+            ],
+          },
+        ])
+        .build();
+    </script>
+  </body>
+</html>
